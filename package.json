@@ -1,0 +1,22 @@
+{
+  "name": "create-mern-app",
+  "version": "1.0.0",
+  "type": "module",
+  "description": " mern-setup-cli is a simple and interactive command-line tool to quickly set up a MERN (MongoDB, Express, React, Node.js) stack project with customizable configurations.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "create-mern-app": "./bin/index.mjs"
+  },
+  "files": ["bin"],
+  "keywords": [
+    "create-mern-app"
+  ],
+  "author": "Prashant Sharam and Vikas Tiwari",
+  "license": "MIT",
+  "dependencies": {
+    "inquirer": "^12.5.0"
+  }
+}
