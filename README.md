@@ -1,6 +1,4 @@
-Here's a comprehensive `README.md` file for your MERN stack project generator package:
 
-```markdown
 # Create MERN Latest 🚀
 
 A CLI tool to quickly set up a full-stack MERN (MongoDB, Express, React, Node.js) project with modern tooling and best practices.
