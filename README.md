@@ -1,7 +1,12 @@
+<<<<<<< HEAD
 Here's the updated README.md for your `create-mern-cli` package with all the new functionality:
 
 ```markdown
 # Create MERN CLI 🚀
+=======
+
+# Create MERN Latest 🚀
+>>>>>>> ab72e073beffaad1e17245cf1bba590c6b6b6ea1
 
 A powerful CLI tool to scaffold full-stack MERN (MongoDB, Express, React, Node.js) applications with robust error handling and automatic cleanup.
 
@@ -191,9 +196,17 @@ Key improvements:
 8. Added TypeScript information
 9. Improved visual hierarchy with emojis
 
+<<<<<<< HEAD
 The README now better reflects:
 - The robust error handling capabilities
 - The interactive nature of the CLI
 - The production-ready structure
 - The improved Windows support
 - The automatic cleanup features
+=======
+You can customize it further with:
+- Badges (version, license, build status)
+- Screenshots
+- More detailed database configuration examples
+- Specific deployment guides for different platforms
+>>>>>>> ab72e073beffaad1e17245cf1bba590c6b6b6ea1
