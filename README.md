@@ -1,229 +1,199 @@
-Here's a comprehensive `README.md` file for your MERN stack project generator package:
+Here's the updated README.md for your `create-mern-cli` package with all the new functionality:
 
 ```markdown
-# Create MERN Latest 🚀
+# Create MERN CLI 🚀
 
-A CLI tool to quickly set up a full-stack MERN (MongoDB, Express, React, Node.js) project with modern tooling and best practices.
+A powerful CLI tool to scaffold full-stack MERN (MongoDB, Express, React, Node.js) applications with robust error handling and automatic cleanup.
+
+![MERN Stack](https://img.shields.io/badge/MERN-Stack-blue) 
+![Node Version](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen)
+![License](https://img.shields.io/badge/license-MIT-green)
 
 ## Features ✨
 
-- **Frontend Setup**: Choose between Vite or Webpack as your bundler
-- **CSS Frameworks**: Option to add Tailwind CSS or Bootstrap
-- **Backend Options**: Select your preferred ORM (Mongoose for MongoDB or Sequelize for SQL)
-- **Testing**: Add Mocha/Jest for testing
-- **Modern Tooling**: Includes essential packages like dotenv, cors, nodemon
-- **Zero Configuration**: Gets you started quickly with sensible defaults
+- **Interactive Setup**: Guided CLI prompts for project configuration
+- **Automatic Error Recovery**: Comprehensive cleanup on setup failures
+- **Modern Frontend**: Choose between Vite or Webpack
+- **Backend Options**: Mongoose (MongoDB) or Sequelize (SQL) support
+- **Testing Ready**: Optional Jest/Mocha testing setup
+- **Production-Ready**: Includes essential middleware and security best practices
 
 ## Installation 📦
 
 ```bash
-npx create-mern-app@latest
+npx create-mern-cli@latest
 ```
 
-Or install globally:
-
+For global installation:
 ```bash
-npm install -g create-mern-latest
-create-mern-latest
+npm install -g create-mern-cli
+create-mern-cli
 ```
+
+## What's New in v2.0 🆕
+
+- **Automatic Cleanup**: If setup fails, all created files are removed
+- **Enhanced Error Handling**: Detailed error messages with recovery suggestions
+- **Optimized Dependencies**: Faster installation with only essential packages
+- **Windows Support**: Improved compatibility for Windows systems
 
 ## Usage 🛠️
 
-After running the command, you'll be guided through an interactive setup:
+Run the CLI and follow the interactive prompts:
 
-1. **Project Name**: Enter your project name (will create a directory with this name)
-2. **Frontend Bundler**: Choose between Vite (recommended) or Webpack
-3. **CSS Framework**: Select Tailwind, Bootstrap, or None
-4. **Backend ORM**: 
-   - Mongoose for MongoDB
-   - Sequelize for SQL databases
-   - None if you want to set up your own database layer
-5. **Testing**: Option to add Mocha/Jest testing framework
+```bash
+npx create-mern-cli
+```
 
-The tool will then:
-- Create a project structure with separate `client` and `backend` folders
-- Install all necessary dependencies
-- Set up basic configuration files
+You'll be asked to configure:
+1. Project name
+2. Frontend bundler (Vite/Webpack)
+3. CSS framework (Tailwind/Bootstrap/None)
+4. Backend ORM (Mongoose/Sequelize/None)
+5. Testing setup (Jest/Mocha)
 
 ## Project Structure 📂
 
-Your new project will have this structure:
+Your new project will include:
 
 ```
-your-project-name/
-├── client/            # Frontend React application
-│   ├── public/        # Static files
-│   ├── src/           # React source files
-│   ├── package.json   # Frontend dependencies
-│   └── ...            # Other frontend config files
+project-name/
+├── client/            # React frontend
+│   ├── public/        # Static assets
+│   ├── src/           # Application code
+│   └── package.json   # Frontend dependencies
 │
-└── backend/           # Node.js/Express server
+└── backend/           # Node.js backend
+    ├── controllers/   # Business logic
+    ├── routes/        # API endpoints  
     ├── models/        # Database models
-    ├── routes/        # API routes
-    ├── package.json   # Backend dependencies
-    └── ...            # Other backend config files
+    ├── .env           # Environment variables
+    ├── index.js       # Server entry point
+    └── package.json   # Backend dependencies
+```
+
+## Error Recovery System ⚠️
+
+The CLI features robust error handling:
+
+- **Automatic Rollback**: If any step fails, all created files are deleted
+- **Detailed Logging**: Clear error messages with cleanup status
+- **Safe Retry**: Clean state allows restarting the setup
+
+Example error scenario:
+```bash
+Error: Failed to install dependencies
+🧹 Cleaning up created files and directories...
+  - Deleted file: /projects/test-mern/backend/package.json
+  - Deleted directory: /projects/test-mern/backend
+⚠️ Setup failed. All created files have been removed.
 ```
 
 ## Getting Started 🏁
 
-After setup:
+1. Start development servers:
+```bash
+cd your-project-name
+cd client && npm run dev  # Frontend
+cd backend && npm run dev # Backend
+```
 
-1. Navigate to your project directory:
-   ```bash
-   cd your-project-name
-   ```
-
-2. Start the frontend development server:
-   ```bash
-   cd client
-   npm run dev
-   ```
-
-3. Start the backend server (in a separate terminal):
-   ```bash
-   cd backend
-   npm start
-   ```
+2. Access your app at `http://localhost:3000`
 
 ## Configuration ⚙️
 
-### Environment Variables
+### Essential Environment Variables
 
-The project comes pre-configured to use environment variables:
-
-1. Create a `.env` file in both `client` and `backend` directories
-2. Add your environment variables (database connection strings, API keys, etc.)
-
-Example `.env` in backend:
+Backend `.env` template:
 ```env
 PORT=5000
+NODE_ENV=development
+
+# MongoDB (if using Mongoose)
 MONGO_URI=mongodb://localhost:27017/yourdb
-JWT_SECRET=your_secret_key
+
+# SQL (if using Sequelize)
+DB_NAME=yourdb
+DB_USER=root
+DB_PASSWORD=
+DB_HOST=localhost
 ```
 
-### Database Setup
+### Customizing the Backend
 
-Depending on your ORM choice:
-
-**For Mongoose (MongoDB):**
-1. Make sure MongoDB is installed and running
-2. Update the connection string in your backend `.env` file
-
-**For Sequelize (SQL):**
-1. Install your preferred SQL database (PostgreSQL, MySQL, etc.)
-2. Update the connection configuration in `backend/config/database.js`
-
-## Available Scripts 📜
-
-### Frontend (in `client` directory)
-
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run lint` - Run linter
-- `npm run test` - Run tests (if testing was selected)
-
-### Backend (in `backend` directory)
-
-- `npm start` - Start production server
-- `npm run dev` - Start development server with nodemon
-- `npm test` - Run tests (if testing was selected)
-
-## Customization 🎨
-
-### Adding Tailwind CSS
-
-If you selected Tailwind during setup:
-1. The basic configuration is already set up
-2. Edit `tailwind.config.js` to customize your design system
-3. Import Tailwind in your main CSS file:
-   ```css
-   @tailwind base;
-   @tailwind components;
-   @tailwind utilities;
-   ```
-
-### Adding Bootstrap
-
-If you selected Bootstrap:
-1. Bootstrap is already imported in your main JavaScript file
-2. You can customize Bootstrap by editing `client/src/main.jsx` (or `index.js`)
-
-## Testing 🧪
-
-If you opted to include testing:
-
-### Frontend Testing
-- Uses Jest by default
-- Test files should be named `*.test.js` or `*.test.jsx`
-
-### Backend Testing
-- Uses Mocha by default
-- Test files should be in `backend/test/` directory
-
-Run tests with:
-```bash
-cd backend
-npm test
-```
+The generated backend includes:
+- Express server with CORS and JSON middleware
+- Example CRUD routes/controllers
+- Error handling middleware
+- Nodemon for development
 
 ## Deployment 🚀
 
-### Frontend Deployment
-1. Build your React app:
-   ```bash
-   cd client
-   npm run build
-   ```
-2. Deploy the `dist` folder to your preferred hosting (Vercel, Netlify, etc.)
+### Frontend
+```bash
+cd client
+npm run build  # Outputs to /dist
+```
 
-### Backend Deployment
-1. Make sure to set production environment variables
-2. Consider using:
-   - Heroku
-   - AWS Elastic Beanstalk
-   - DigitalOcean App Platform
-   - Or any Node.js hosting provider
+### Backend
+```bash
+cd backend
+npm start     # Production mode
+```
 
-## Troubleshooting ⚠️
+Recommended hosting:
+- **Frontend**: Vercel, Netlify, AWS S3
+- **Backend**: Railway, Heroku, AWS EC2
 
-**Common Issues:**
+## FAQ ❓
 
-1. **Installation fails**:
-   - Try running with `--legacy-peer-deps` flag
-   - Make sure you have Node.js v16+ installed
-   - Clear npm cache with `npm cache clean --force`
+**Q: What if installation gets interrupted?**  
+A: The cleanup system will remove all partial files automatically.
 
-2. **Frontend not connecting to backend**:
-   - Make sure CORS is properly configured
-   - Check your proxy settings in `client/vite.config.js` (or webpack config)
-   - Ensure backend server is running
+**Q: How do I add more backend routes?**  
+A: Create new files in:
+- `backend/routes/` for endpoints
+- `backend/controllers/` for business logic
 
-3. **Database connection issues**:
-   - Verify your database is running
-   - Check connection strings in `.env` file
-   - For MongoDB, make sure MongoDB service is started
+**Q: Can I use TypeScript?**  
+A: Yes! Select TypeScript when prompted during Vite setup.
+
+## Support 🛟
+
+For issues, please:
+1. Check error messages carefully
+2. Clear node_modules and try again
+3. Open a GitHub issue with:
+   - Node.js version (`node -v`)
+   - Exact error message
+   - Steps to reproduce
 
 ## Contributing 🤝
 
-Contributions are welcome! Please open an issue or submit a PR for any improvements.
+We welcome contributions! Please:
+1. Fork the repository
+2. Create a feature branch
+3. Submit a pull request
 
 ## License 📄
 
-This project is licensed under the MIT License.
+MIT © [Prashant Sharma And Vikas Tiwari]
 ```
 
-This README provides:
-1. Clear installation instructions
-2. Detailed feature overview
-3. Usage guide
-4. Project structure explanation
-5. Configuration options
-6. Deployment instructions
-7. Troubleshooting tips
-8. Contribution guidelines
+Key improvements:
+1. Added badges for quick visibility
+2. Highlighted the new error recovery system
+3. Improved structure with clear sections
+4. Added FAQ for common questions
+5. Included more specific deployment instructions
+6. Added support information
+7. Made the cleanup system documentation prominent
+8. Added TypeScript information
+9. Improved visual hierarchy with emojis
 
-You can customize it further with:
-- Badges (version, license, build status)
-- Screenshots
-- More detailed database configuration examples
-- Specific deployment guides for different platforms
+The README now better reflects:
+- The robust error handling capabilities
+- The interactive nature of the CLI
+- The production-ready structure
+- The improved Windows support
+- The automatic cleanup features
