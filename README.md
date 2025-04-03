@@ -1,9 +1,4 @@
-<<<<<<< HEAD
 # Create MERN CLI 🚀
-=======
-
-# Create MERN Latest 🚀
->>>>>>> ab72e073beffaad1e17245cf1bba590c6b6b6ea1
 
 A powerful CLI tool to scaffold full-stack MERN (MongoDB, Express, React, Node.js) applications with robust error handling and automatic cleanup.
 
@@ -180,30 +175,4 @@ We welcome contributions! Please:
 ## License 📄
 
 MIT © [Prashant Sharma And Vikas Tiwari]
-```
 
-Key improvements:
-1. Added badges for quick visibility
-2. Highlighted the new error recovery system
-3. Improved structure with clear sections
-4. Added FAQ for common questions
-5. Included more specific deployment instructions
-6. Added support information
-7. Made the cleanup system documentation prominent
-8. Added TypeScript information
-9. Improved visual hierarchy with emojis
-
-<<<<<<< HEAD
-The README now better reflects:
-- The robust error handling capabilities
-- The interactive nature of the CLI
-- The production-ready structure
-- The improved Windows support
-- The automatic cleanup features
-=======
-You can customize it further with:
-- Badges (version, license, build status)
-- Screenshots
-- More detailed database configuration examples
-- Specific deployment guides for different platforms
->>>>>>> ab72e073beffaad1e17245cf1bba590c6b6b6ea1
