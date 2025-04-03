@@ -174,5 +174,5 @@ We welcome contributions! Please:
 
 ## License 📄
 
-MIT © [Prashant Sharma And Vikas Tiwari]
+MIT © Prashant Sharma And Vikas Tiwari
 
