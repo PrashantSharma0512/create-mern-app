@@ -1,7 +1,4 @@
 <<<<<<< HEAD
-Here's the updated README.md for your `create-mern-cli` package with all the new functionality:
-
-```markdown
 # Create MERN CLI 🚀
 =======
 
