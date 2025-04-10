@@ -1,24 +1,24 @@
 #!/usr/bin/env node
-import fs from 'fs';
-import path from 'path';
-import { execSync } from 'child_process';
-import inquirer from 'inquirer';
+import fs from "fs";
+import path from "path";
+import { execSync } from "child_process";
+import inquirer from "inquirer";
 
 // Global variables for cleanup tracking
-let projectRoot = '';
+let projectRoot = "";
 let createdDirs = [];
 let installedDeps = false;
 let createdFiles = [];
 
 // Windows-compatible path joiner
 function joinPaths(...paths) {
-  return path.join(...paths).replace(/\\/g, '/');
+  return path.join(...paths).replace(/\\/g, "/");
 }
 
 // Main setup function
 async function setupProject() {
   try {
-    console.log("Welcome to Create MERN App!\n");
+    console.log("Welcome to Create MERN CLI!\n");
     console.log("\n🚀 Setting up your MERN project...\n");
 
     const answers = await getProjectConfiguration();
@@ -39,34 +39,35 @@ async function setupProject() {
 async function getProjectConfiguration() {
   return inquirer.prompt([
     {
-      type: 'input',
-      name: 'projectName',
-      message: 'Enter project name:',
-      validate: input => input.trim() ? true : 'Project name cannot be empty'
+      type: "input",
+      name: "projectName",
+      message: "Enter project name:",
+      validate: (input) =>
+        input.trim() ? true : "Project name cannot be empty",
     },
     {
-      type: 'list',
-      name: 'bundler',
-      message: 'Choose frontend bundler:',
-      choices: ['Vite', 'Webpack']
+      type: "list",
+      name: "bundler",
+      message: "Choose frontend bundler:",
+      choices: ["Vite", "Webpack"],
     },
     {
-      type: 'list',
-      name: 'css',
-      message: 'Choose a CSS framework:',
-      choices: ['Tailwind', 'Bootstrap', 'None']
+      type: "list",
+      name: "css",
+      message: "Choose a CSS framework:",
+      choices: ["Tailwind", "Bootstrap", "None"],
     },
     {
-      type: 'list',
-      name: 'orm',
-      message: 'Choose a backend ORM:',
-      choices: ['Mongoose (MongoDB)', 'Sequelize (SQL)', 'None']
+      type: "list",
+      name: "orm",
+      message: "Choose a backend ORM:",
+      choices: ["Mongoose (MongoDB)", "Sequelize (SQL)", "None"],
     },
     {
-      type: 'confirm',
-      name: 'testing',
-      message: 'Do you want to add a testing library? (Mocha/Jest)'
-    }
+      type: "confirm",
+      name: "testing",
+      message: "Do you want to add a testing library? (Mocha/Jest)",
+    },
   ]);
 }
 
@@ -75,19 +76,18 @@ async function createProjectStructure(projectName) {
   console.log("📂 Creating project structure...");
 
   const directories = [
-    '',
-    'client',
-    'backend',
-    'backend/controllers',
-    'backend/routes',
-    'backend/models'
+    "",
+    "client",
+    "server",
+    "server/controllers",
+    "server/routes",
+    "server/models",
   ];
 
   for (const dir of directories) {
     const dirPath = joinPaths(projectRoot, dir);
     fs.mkdirSync(dirPath, { recursive: true });
     createdDirs.push(dirPath);
-    console.log(`✅ Created directory: ${dir || 'root'}`);
   }
 }
 
@@ -99,64 +99,58 @@ async function installDependencies(answers) {
 
 // Frontend setup
 async function setupFrontend(answers) {
-  console.log("\n🛠️ Setting up frontend...");
-  const clientPath = joinPaths(projectRoot, 'client');
+  console.log("\n🛠️ Setting up client...");
+  const clientPath = joinPaths(projectRoot, "client");
 
-  if (answers.bundler === 'Vite') {
+  if (answers.bundler === "Vite") {
     await setupViteFrontend(clientPath);
   } else {
     await setupWebpackFrontend(clientPath);
   }
 
-  if (answers.css === 'Tailwind') {
+  if (answers.css === "Tailwind") {
     await setupTailwind(clientPath, answers.bundler);
-  } else if (answers.css === 'Bootstrap') {
+  } else if (answers.css === "Bootstrap") {
     await setupBootstrap(clientPath);
   }
 
   createdFiles.push(
-    joinPaths(clientPath, 'package.json'),
-    joinPaths(clientPath, 'package-lock.json')
+    joinPaths(clientPath, "package.json"),
+    joinPaths(clientPath, "package-lock.json")
   );
 }
 
 async function setupViteFrontend(clientPath) {
-  await executeCommand(clientPath, 'npx create-vite@latest . ');
+  await executeCommand(clientPath, "npx create-vite@latest . ");
 }
 
 async function setupWebpackFrontend(clientPath) {
-  await executeCommand(clientPath, 'npm init -y');
-  await executeCommand(clientPath, 'npm install --save-dev webpack webpack-cli webpack-dev-server html-webpack-plugin @babel/core babel-loader @babel/preset-env @babel/preset-react css-loader style-loader');
-  await executeCommand(clientPath, 'npm install react react-dom');
+  await executeCommand(clientPath, "npm init -y");
+  await executeCommand(
+    clientPath,
+    "npm install --save-dev webpack webpack-cli webpack-dev-server html-webpack-plugin @babel/core babel-loader @babel/preset-env @babel/preset-react css-loader style-loader"
+  );
+  await executeCommand(clientPath, "npm install react react-dom");
 
   writeFileAndTrack(
-    joinPaths(clientPath, 'webpack.config.js'),
+    joinPaths(clientPath, "webpack.config.js"),
     generateWebpackConfig()
   );
 
   // Create basic React files
-  const srcPath = joinPaths(clientPath, 'src');
-  const publicPath = joinPaths(clientPath, 'public');
+  const srcPath = joinPaths(clientPath, "src");
+  const publicPath = joinPaths(clientPath, "public");
   fs.mkdirSync(srcPath, { recursive: true });
   fs.mkdirSync(publicPath, { recursive: true });
 
-  writeFileAndTrack(
-    joinPaths(srcPath, 'index.js'),
-    generateReactIndexJS()
-  );
-  writeFileAndTrack(
-    joinPaths(srcPath, 'App.js'),
-    generateReactAppJS()
-  );
-  writeFileAndTrack(
-    joinPaths(publicPath, 'index.html'),
-    generateIndexHTML()
-  );
+  writeFileAndTrack(joinPaths(srcPath, "index.js"), generateReactIndexJS());
+  writeFileAndTrack(joinPaths(srcPath, "App.js"), generateReactAppJS());
+  writeFileAndTrack(joinPaths(publicPath, "index.html"), generateIndexHTML());
 
   // Update package.json scripts
   updatePackageScripts(clientPath, {
-    "start": "webpack serve --mode development",
-    "build": "webpack --mode production"
+    start: "webpack serve --mode development",
+    build: "webpack --mode production",
   });
 }
 
@@ -165,13 +159,16 @@ async function setupTailwind(clientPath, bundler) {
   console.log("\n🌊 Setting up Tailwind CSS...");
 
   try {
-    if (bundler === 'Vite') {
+    if (bundler === "Vite") {
       // Vite-specific Tailwind v4 setup
-      await executeCommand(clientPath, 'npm install -D tailwindcss @tailwindcss/vite');
+      await executeCommand(
+        clientPath,
+        "npm install -D tailwindcss @tailwindcss/vite"
+      );
 
       // Create Tailwind config (ESM)
       writeFileAndTrack(
-        joinPaths(clientPath, 'vite.config.js'),
+        joinPaths(clientPath, "vite.config.js"),
         `import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
@@ -185,17 +182,23 @@ export default defineConfig({
 })
 `
       );
-      const cssPath = joinPaths(clientPath, 'src', 'index.css');
-      writeFileAndTrack(cssPath, `@import "tailwindcss";
-`);
+      const cssPath = joinPaths(clientPath, "src", "index.css");
+      writeFileAndTrack(
+        cssPath,
+        `@import "tailwindcss";
+`
+      );
 
-      console.log("ℹ️ Remember to add '@tailwindcss/vite' in your vite.config.js plugins.");
+      
     } else {
       // Webpack installation (assuming still on PostCSS for now)
-      await executeCommand(clientPath, 'npm install -D tailwindcss postcss autoprefixer postcss-loader');
+      await executeCommand(
+        clientPath,
+        "npm install -D tailwindcss postcss autoprefixer postcss-loader"
+      );
 
       writeFileAndTrack(
-        joinPaths(clientPath, 'tailwind.config.cjs'),
+        joinPaths(clientPath, "tailwind.config.cjs"),
         `/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -210,7 +213,7 @@ module.exports = {
       );
 
       writeFileAndTrack(
-        joinPaths(clientPath, 'postcss.config.cjs'),
+        joinPaths(clientPath, "postcss.config.cjs"),
         `module.exports = {
   plugins: {
     tailwindcss: {},
@@ -219,16 +222,21 @@ module.exports = {
 };`
       );
 
-      const cssPath = joinPaths(clientPath, 'src', 'index.css');
-      writeFileAndTrack(cssPath, `@tailwind base;
+      const cssPath = joinPaths(clientPath, "src", "index.css");
+      writeFileAndTrack(
+        cssPath,
+        `@tailwind base;
   @tailwind components;
-  @tailwind utilities;`);
+  @tailwind utilities;`
+      );
     }
 
-   
-
     // Update main file to import Tailwind CSS
-    const mainEntryPath = joinPaths(clientPath, 'src', bundler === 'Vite' ? 'main.jsx' : 'index.js');
+    const mainEntryPath = joinPaths(
+      clientPath,
+      "src",
+      bundler === "Vite" ? "main.jsx" : "index.js"
+    );
     updateMainEntryFile(mainEntryPath, `import './index.css';`);
 
     console.log("✅ Tailwind CSS setup completed successfully.");
@@ -238,75 +246,71 @@ module.exports = {
   }
 }
 
-
-
-
 // Bootstrap setup
 async function setupBootstrap(clientPath) {
   console.log("\n🎨 Installing Bootstrap...");
-  await executeCommand(clientPath, 'npm install bootstrap');
+  await executeCommand(clientPath, "npm install bootstrap");
 }
 
 // Backend setup
 async function setupBackend(answers) {
-  console.log("\n⚙️ Setting up backend...");
-  const backendPath = joinPaths(projectRoot, 'backend');
+  console.log("\n⚙️ Setting up server...");
+  const backendPath = joinPaths(projectRoot, "server");
 
-  await executeCommand(backendPath, 'npm init -y');
+  await executeCommand(backendPath, "npm init -y");
 
   createdFiles.push(
-    joinPaths(backendPath, 'package.json'),
-    joinPaths(backendPath, 'package-lock.json')
+    joinPaths(backendPath, "package.json"),
+    joinPaths(backendPath, "package-lock.json")
   );
 
-  await executeCommand(backendPath, 'npm install express dotenv cors');
-  await executeCommand(backendPath, 'npm install --save-dev nodemon');
+  await executeCommand(backendPath, "npm install express dotenv cors");
+  await executeCommand(backendPath, "npm install --save-dev nodemon");
 
-  if (answers.orm.includes('Mongoose')) {
+  if (answers.orm.includes("Mongoose")) {
     console.log("\n🍃 Installing Mongoose...");
-    await executeCommand(backendPath, 'npm install mongoose');
+    await executeCommand(backendPath, "npm install mongoose");
   }
 
-  if (answers.orm.includes('Sequelize')) {
+  if (answers.orm.includes("Sequelize")) {
     console.log("\n📊 Installing Sequelize...");
-    await executeCommand(backendPath, 'npm install sequelize pg pg-hstore');
+    await executeCommand(backendPath, "npm install sequelize pg pg-hstore");
   }
 
   if (answers.testing) {
     console.log("\n🧪 Installing testing libraries...");
-    await executeCommand(backendPath, 'npm install --save-dev mocha jest');
+    await executeCommand(backendPath, "npm install --save-dev mocha jest");
   }
 
   await createBackendFiles(backendPath, answers);
 }
 
 async function createBackendFiles(backendPath, answers) {
-  console.log("\n📝 Creating backend files...");
+  console.log("\n📝 Creating server files...");
 
   writeFileAndTrack(
-    joinPaths(backendPath, 'index.js'),
+    joinPaths(backendPath, "index.js"),
     generateBackendIndexJS(answers)
   );
 
   writeFileAndTrack(
-    joinPaths(backendPath, 'routes', 'exampleRoutes.js'),
+    joinPaths(backendPath, "routes", "exampleRoutes.js"),
     generateExampleRoutesJS()
   );
 
   writeFileAndTrack(
-    joinPaths(backendPath, 'controllers', 'exampleController.js'),
+    joinPaths(backendPath, "controllers", "exampleController.js"),
     generateExampleControllerJS()
   );
 
-  writeFileAndTrack(
-    joinPaths(backendPath, '.env'),
-    generateEnvFile(answers)
-  );
+  writeFileAndTrack(joinPaths(backendPath, ".env"), generateEnvFile(answers));
 
   updatePackageScripts(backendPath, {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "test": answers.testing ? "jest" : "echo \"Error: no test specified\" && exit 1"
+    start: "node index.js",
+    dev: "nodemon index.js",
+    test: answers.testing
+      ? "jest"
+      : 'echo "Error: no test specified" && exit 1',
   });
 }
 
@@ -400,7 +404,6 @@ function generateIndexHTML() {
 </html>`;
 }
 
-
 function generatePostCSSConfig() {
   return `module.exports = {
   plugins: {
@@ -428,7 +431,7 @@ app.use('/api/examples', exampleRoutes);
 
 // Basic route for testing
 app.get('/', (req, res) => {
-  res.send('Backend Server is Running');
+  res.send('server Server is Running');
 });
 
 // Error handling middleware
@@ -569,11 +572,19 @@ module.exports = {
 function generateEnvFile(answers) {
   return `PORT=5000
 NODE_ENV=development
-${answers.orm.includes('Mongoose') ? 'MONGO_URI=mongodb://localhost:27017/' + answers.projectName + '\n' : ''}
-${answers.orm.includes('Sequelize') ? `DB_NAME=${answers.projectName}
+${
+  answers.orm.includes("Mongoose")
+    ? "MONGO_URI=mongodb://localhost:27017/" + answers.projectName + "\n"
+    : ""
+}
+${
+  answers.orm.includes("Sequelize")
+    ? `DB_NAME=${answers.projectName}
 DB_USER=root
 DB_PASSWORD=
-DB_HOST=localhost\n` : ''}`;
+DB_HOST=localhost\n`
+    : ""
+}`;
 }
 
 // Utility functions
@@ -585,14 +596,14 @@ function writeFileAndTrack(filePath, content) {
 
 function updateMainEntryFile(filePath, prependContent) {
   if (fs.existsSync(filePath)) {
-    const originalContent = fs.readFileSync(filePath, 'utf8');
+    const originalContent = fs.readFileSync(filePath, "utf8");
     fs.writeFileSync(filePath, `${prependContent}\n${originalContent}`);
   }
 }
 
 function updatePackageScripts(pkgPath, scripts) {
-  const packageJsonPath = joinPaths(pkgPath, 'package.json');
-  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+  const packageJsonPath = joinPaths(pkgPath, "package.json");
+  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
   packageJson.scripts = scripts;
   fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
   console.log("✅ Updated package.json scripts");
@@ -602,9 +613,9 @@ async function executeCommand(cwd, command) {
   try {
     execSync(command, {
       cwd: cwd,
-      stdio: 'inherit',
+      stdio: "inherit",
       shell: true,
-      windowsHide: true
+      windowsHide: true,
     });
   } catch (error) {
     console.error(`Command failed in ${cwd}: ${command}`);
@@ -613,45 +624,49 @@ async function executeCommand(cwd, command) {
 }
 
 function displaySuccessMessage(projectName) {
-  console.log(`\n✅ MERN project '${projectName}' setup complete! Happy coding!\n`);
+  console.log(
+    `\n✅ MERN project '${projectName}' setup complete! Happy coding!\n`
+  );
   console.log(`To get started:
   cd ${projectName}
-  Start frontend: cd client && npm run dev
-  Start backend: cd backend && npm run dev
+  Start client: cd client && npm run dev
+  Start server: cd server && npm run dev
     `);
 }
 
 // Cleanup function
 async function cleanup(error) {
-  console.error('\n❌ Error occurred during setup:', error.message);
-  console.log('\n🧹 Cleaning up created files and directories...');
+  console.error("\n❌ Error occurred during setup:", error.message);
+  console.log("\n🧹 Cleaning up created files and directories...");
 
   // Add delay for Windows file handles
-  await new Promise(resolve => setTimeout(resolve, 500));
+  await new Promise((resolve) => setTimeout(resolve, 500));
 
   // Delete files with retry logic
   for (const file of createdFiles.reverse()) {
-    await deleteWithRetry(file, 'file');
+    await deleteWithRetry(file, "file");
   }
 
   // Delete directories with retry logic
   for (const dir of createdDirs.reverse()) {
-    await deleteWithRetry(dir, 'directory');
+    await deleteWithRetry(dir, "directory");
   }
 
   // Clean node_modules if needed
   if (installedDeps && projectRoot) {
     const nodeModulesPaths = [
-      joinPaths(projectRoot, 'client', 'node_modules'),
-      joinPaths(projectRoot, 'backend', 'node_modules')
+      joinPaths(projectRoot, "client", "node_modules"),
+      joinPaths(projectRoot, "server", "node_modules"),
     ];
 
     for (const nmPath of nodeModulesPaths) {
-      await deleteWithRetry(nmPath, 'directory');
+      await deleteWithRetry(nmPath, "directory");
     }
   }
 
-  console.log('\n⚠️ Setup failed. All created files and directories have been removed.');
+  console.log(
+    "\n⚠️ Setup failed. All created files and directories have been removed."
+  );
   process.exit(1);
 }
 
@@ -662,7 +677,7 @@ async function deleteWithRetry(target, type) {
   while (retryCount < maxRetries) {
     try {
       if (fs.existsSync(target)) {
-        if (type === 'file') {
+        if (type === "file") {
           fs.unlinkSync(target);
         } else {
           fs.rmSync(target, { recursive: true, force: true });
@@ -675,14 +690,14 @@ async function deleteWithRetry(target, type) {
       if (retryCount === maxRetries) {
         console.error(`  - Failed to delete ${type} ${target}:`, err.message);
       } else {
-        await new Promise(resolve => setTimeout(resolve, 500 * retryCount));
+        await new Promise((resolve) => setTimeout(resolve, 500 * retryCount));
       }
     }
   }
 }
 
 // Start the setup process
-setupProject().catch(err => {
-  console.error('Error:', err);
+setupProject().catch((err) => {
+  console.error("Error:", err);
   process.exit(1);
 });
