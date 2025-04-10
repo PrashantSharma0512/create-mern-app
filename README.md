@@ -60,7 +60,7 @@ project-name/
 │   ├── src/           # Application code
 │   └── package.json   # Frontend dependencies
 │
-└── backend/           # Node.js backend
+└── server/           # Node.js server
     ├── controllers/   # Business logic
     ├── routes/        # API endpoints  
     ├── models/        # Database models
@@ -92,7 +92,7 @@ Error: Failed to install dependencies
 ```bash
 cd your-project-name
 cd client && npm run dev  # Frontend
-cd backend && npm run dev # Backend
+cd server && npm run dev # Backend
 ```
 
 2. Access your app at `http://localhost:3000`
@@ -134,7 +134,7 @@ npm run build  # Outputs to /dist
 
 ### Backend
 ```bash
-cd backend
+cd server
 npm start     # Production mode
 ```
 
@@ -174,6 +174,7 @@ We welcome contributions! Please:
 
 ## License 📄
 
-MIT © Prashant Sharma And Vikas Tiwari
+MIT © **Prashant Sharma and Vikas Tiwari**
+
 
 ## Thank You
